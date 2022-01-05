@@ -35,6 +35,9 @@ namespace GDApp
 
                 // EventDispatcher.Raise(new EventData(EventCategoryType.Inventory,
                 //  EventActionType.OnAddInventory, parameters1));
+                float parameters3 = 500;
+                MyCollidableFirstPersonController.DEFAULT_JUMP_HEIGHT = parameters3;
+                
             }
 
             base.HandleResponse(parentGameObject);

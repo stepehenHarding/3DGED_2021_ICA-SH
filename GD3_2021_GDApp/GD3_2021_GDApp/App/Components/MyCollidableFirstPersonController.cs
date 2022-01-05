@@ -13,7 +13,7 @@ namespace GDApp
     {
         #region Statics
 
-        private static readonly float DEFAULT_JUMP_HEIGHT = 5;
+        public static  float DEFAULT_JUMP_HEIGHT = 20;
 
         #endregion Statics
 
@@ -39,7 +39,7 @@ namespace GDApp
         public MyCollidableFirstPersonController(float jumpHeight, float moveSpeed, float strafeSpeed, Vector2 rotationSpeed)
         : base(moveSpeed, strafeSpeed, rotationSpeed, true)
         {
-            this.jumpHeight = jumpHeight > 0 ? jumpHeight : DEFAULT_JUMP_HEIGHT;
+            this.jumpHeight = jumpHeight > 5000? jumpHeight : DEFAULT_JUMP_HEIGHT;
         }
 
         #endregion Contructors
