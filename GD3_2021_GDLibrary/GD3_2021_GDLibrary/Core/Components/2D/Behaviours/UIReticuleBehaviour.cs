@@ -15,7 +15,7 @@ namespace GDLibrary.Components.UI
 
             Input.Mouse.SetMouseVisible(false);
 
-            EventDispatcher.Subscribe(EventCategoryType.Picking, HandlePickedObject);
+//            EventDispatcher.Subscribe(EventCategoryType.Picking, HandlePickedObject);
 
             base.Awake();
         }
@@ -57,12 +57,12 @@ namespace GDLibrary.Components.UI
             Input.Mouse.SetMouseVisible(true);
             base.OnDisabled();
         }
-
+       
         public override void Update()
         {
-            uiObject.Transform.LocalTranslation = Input.Mouse.Position;
+            uiObject.Transform.LocalTranslation = new Vector2(960, 540);
 
-            reticuleRotation += 1 / 60.0f;
+            reticuleRotation += 0 / 60.0f;
 
             base.Update();
         }
