@@ -74,9 +74,11 @@ namespace GDApp
         protected override void HandleEvent(EventData eventData)
         {
             //add more event handlers here...
-            if (eventData.EventActionType == EventActionType.OnPickup)
+            if (eventData.EventActionType == EventActionType.OnPlay)
             {
-                var objectName = eventData.Parameters[0] as string;
+                EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPlay));
+                object[] parameters = { "bensound-evolution"};
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
             }
             //dont forget to call base otherwise no play/pause support
             base.HandleEvent(eventData);

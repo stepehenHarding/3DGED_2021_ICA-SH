@@ -215,6 +215,14 @@ namespace GDApp
         /// <param name="gameTime"></param>
         protected override void Update(GameTime gameTime)
         {
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.Space))
+            {
+                object[] parameters = { "jump" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
+                    EventActionType.OnPlay2D, parameters));
+            }
+
+            
             //if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.P))
             //{
             //    //DEMO - raise event
@@ -411,6 +419,50 @@ namespace GDApp
                 "smokealarm",
                 soundEffect,
                 SoundCategoryType.Alarm,
+                new Vector3(1, 0, 0),
+                false));
+
+             soundEffect =
+               Content.Load<SoundEffect>("Assets/Sounds/bensound-evolution");
+
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "bensound-evolution",
+                soundEffect,
+                SoundCategoryType.Ambiance,
+                new Vector3(1, 0, 0),
+                false));
+
+             soundEffect =
+               Content.Load<SoundEffect>("Assets/Sounds/walkingFinished");
+
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "walkingFinished",
+                soundEffect,
+                SoundCategoryType.Ambiance,
+                new Vector3(1, 0, 0),
+                false));
+
+             soundEffect =
+               Content.Load<SoundEffect>("Assets/Sounds/lava");
+
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "lava",
+                soundEffect,
+                SoundCategoryType.Lava,
+                new Vector3(1, 0, 0),
+                false));
+
+            soundEffect =
+               Content.Load<SoundEffect>("Assets/Sounds/jump");
+
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "jump",
+                soundEffect,
+                SoundCategoryType.Jump,
                 new Vector3(1, 0, 0),
                 false));
         }

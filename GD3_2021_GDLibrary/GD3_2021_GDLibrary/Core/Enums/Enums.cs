@@ -149,6 +149,9 @@
         WinLose,
         Explosion,
         BackgroundMusic,
-        Alarm
+        Alarm,
+        Jump,
+        Lava,
+        Ambiance
     }
 }
