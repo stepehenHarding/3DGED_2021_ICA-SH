@@ -438,6 +438,8 @@ namespace GDApp
             //ui
             textureDictionary.Add("ui_progress_32_8", Content.Load<Texture2D>("Assets/Textures/UI/Controls/ui_progress_32_8"));
             textureDictionary.Add("progress_white", Content.Load<Texture2D>("Assets/Textures/UI/Controls/progress_white"));
+            textureDictionary.Add("exit", Content.Load<Texture2D>("Assets/Textures/UI/Controls/EXIT"));
+            textureDictionary.Add("start", Content.Load<Texture2D>("Assets/Textures/UI/Controls/start"));
 
             //menu
             textureDictionary.Add("mainmenu", Content.Load<Texture2D>("Assets/Textures/UI/Backgrounds/mainmenu"));
@@ -519,13 +521,13 @@ namespace GDApp
             var texture = textureDictionary["mainmenu"];
             //get how much we need to scale background to fit screen, then downsizes a little so we can see game behind background
             var scale = _graphics.GetScaleForTexture(texture,
-                new Vector2(0.8f, 0.8f));
+                new Vector2(1f, 1f));
 
             menuObject = new UITextureObject("main background",
                 UIObjectType.Texture,
                 new Transform2D(Screen.Instance.ScreenCentre, scale, 0), //sets position as center of screen
                 0,
-                new Color(255, 255, 255, 200),
+                new Color(255, 255, 255, 500),
                 texture.GetOriginAtCenter(), //if we want to position image on screen center then we need to set origin as texture center
                 texture);
 
@@ -534,11 +536,11 @@ namespace GDApp
 
             /**************************** Play Button ****************************/
 
-            var btnTexture = textureDictionary["genericbtn"];
+            var btnTexture = textureDictionary["start"];
             var sourceRectangle
                 = new Microsoft.Xna.Framework.Rectangle(0, 0,
                 btnTexture.Width, btnTexture.Height);
-            var origin = new Vector2(btnTexture.Width / 2.0f, btnTexture.Height / 2.0f);
+            var origin = new Vector2(1430, 500);
 
             var playBtn = new UIButtonObject(AppData.MENU_PLAY_BTN_NAME, UIObjectType.Button,
                 new Transform2D(AppData.MENU_PLAY_BTN_POSITION,
@@ -550,7 +552,7 @@ namespace GDApp
                 btnTexture,
                 null,
                 sourceRectangle,
-                "Play",
+                "",
                 fontDictionary["menu"],
                 Color.Black,
                 Vector2.Zero);
@@ -561,37 +563,19 @@ namespace GDApp
 
             mainMenuUIScene.Add(playBtn);
 
-            /**************************** Controls Button ****************************/
-
-            //same button texture so we can re-use texture, sourceRectangle and origin
-
-            var controlsBtn = new UIButtonObject(AppData.MENU_CONTROLS_BTN_NAME, UIObjectType.Button,
-                new Transform2D(AppData.MENU_CONTROLS_BTN_POSITION, 0.5f * Vector2.One, 0),
-                0.1f,
-                Color.White,
-                origin,
-                btnTexture,
-                "Controls",
-                fontDictionary["menu"],
-                Color.Black);
-
-            //demo button color change
-            controlsBtn.AddComponent(new UIColorMouseOverBehaviour(Color.Orange, Color.White));
-
-            mainMenuUIScene.Add(controlsBtn);
-
             /**************************** Exit Button ****************************/
 
             //same button texture so we can re-use texture, sourceRectangle and origin
 
             //use a simple/smaller version of the UIButtonObject constructor
+            var btnTexture2 = textureDictionary["exit"];
             var exitBtn = new UIButtonObject(AppData.MENU_EXIT_BTN_NAME, UIObjectType.Button,
                 new Transform2D(AppData.MENU_EXIT_BTN_POSITION, 0.5f * Vector2.One, 0),
                 0.1f,
                 Color.Orange,
                 origin,
-                btnTexture,
-                "Exit",
+                btnTexture2,
+                "",
                 fontDictionary["menu"],
                 Color.Black);
 
