@@ -910,9 +910,10 @@ namespace GDApp
         {
             InitializeCollidableGround(level, worldScale);
             InitializeCollidableCubes(level);
- //           InitializeCollidablePickup(level);
+            InitializeCollidablePickup(level);
             InitializeCollidableModels(level);
             InitializeCollidableTriangleMeshes(level);
+            InitializeCrown(level);
         }
 
         private void InitializeCollidableTriangleMeshes(Scene level)
@@ -943,6 +944,36 @@ namespace GDApp
 
             //add To Scene Manager
             //level.Add(complexModel);
+        }
+        private void InitializeCrown(Scene level)
+        {
+            #region Signs
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var crown = new GameObject("cube", GameObjectType.Consumable, true);
+
+            GameObject clone = null;
+
+            clone = crown.Clone() as GameObject;
+            clone.Name = "cube";
+            clone.Transform.Translate(10, 5, 10);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["cube"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["cube"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
         }
 
         private void InitializeCollidableModels(Scene level)
@@ -981,36 +1012,36 @@ namespace GDApp
                 level.Add(clone);
             }
         }
-        //private void InitializeCollidablePickup(Scene level)
-        //{
-        //    #region Reusable - You can copy and re-use this code elsewhere, if required
+        private void InitializeCollidablePickup(Scene level)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
 
          
-        //    #endregion Reusable - You can copy and re-use this code elsewhere, if required
-        //    var shader = new BasicShader(Application.Content, false, true);
-        //    var crown = new GameObject("sphere", GameObjectType.Consumable, true);
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+            var shader = new BasicShader(Application.Content, false, true);
+            var crown = new GameObject("sphere", GameObjectType.Consumable, true);
 
-        //    GameObject clone = null;
+            GameObject clone = null;
 
-        //    clone = crown.Clone() as GameObject;
-        //    clone.Name = "sphere";
-        //    clone.Transform.Translate(-5 + 1 / 10f, 5 + 4 * 1, 0);
-        //    clone.Transform.SetScale(1, 1, 1);
-        //    clone.AddComponent(new ModelRenderer(modelDictionary["sphere"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
+            clone = crown.Clone() as GameObject;
+            clone.Name = "sphere";
+            clone.Transform.Translate(-5 + 1 / 10f, 5 + 4 * 1, 0);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["sphere"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
 
-        //    //add Collision Surface(s)
-        //    collider = new Collider();
-        //    clone.AddComponent(collider);
-        //    collider.AddPrimitive(
-        //       CollisionUtility.GetTriangleMesh(modelDictionary["sphere"],
-        //        new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
-        //        new MaterialProperties(0.1f, 0.8f, 0.7f));
-        //    collider.Enable(true, 1);
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["sphere"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
 
-        //    //add To Scene Manager
-        //    level.Add(clone);
+            //add To Scene Manager
+            level.Add(clone);
 
-        //}
+        }
 
         private void InitializeCollidableGround(Scene level, float worldScale)
         {
@@ -1043,6 +1074,7 @@ namespace GDApp
             level.Add(ground);
         }
 
+
         private void InitializeCollidableCubes(Scene level)
         {
             #region Reusable - You can copy and re-use this code elsewhere, if required
@@ -1074,7 +1106,7 @@ namespace GDApp
                 clone.AddComponent(new PickupBehaviour("ammo pack", 15));
 
                 //add demo alpha change behaviour
-                clone.AddComponent(new ColorLerpBehaviour(Color.White, Color.Red, 0.1f));
+                clone.AddComponent(new ColorLerpBehaviour(Color.White, Color.Blue, 0.1f));
 
                 //add Collision Surface(s)
                 collider = new MyPlayerCollider();
