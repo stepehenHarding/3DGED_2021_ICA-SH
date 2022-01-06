@@ -13,7 +13,9 @@ namespace GDApp
     {
         #region Statics
 
-        public static  float DEFAULT_JUMP_HEIGHT = 20;
+        private static float dEFAULT_JUMP_HEIGHT = 30;
+        
+        
 
         #endregion Statics
 
@@ -26,6 +28,8 @@ namespace GDApp
         private Vector3 restrictedLook, restrictedRight;
 
         private float jumpHeight;
+
+        public static float DEFAULT_JUMP_HEIGHT { get => dEFAULT_JUMP_HEIGHT; set => dEFAULT_JUMP_HEIGHT = value; }
 
         #endregion Fields
 
@@ -117,7 +121,9 @@ namespace GDApp
         private void HandleJump()
         {
             if (Input.Keys.IsPressed(Keys.Space))
-                characterBody.DoJump(jumpHeight);
+                
+            characterBody.DoJump(jumpHeight);
+            
         }
 
         #region Unused
