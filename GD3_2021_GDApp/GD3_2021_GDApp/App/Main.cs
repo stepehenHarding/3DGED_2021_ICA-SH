@@ -366,7 +366,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true, true);
+            InitializeDebugUI(false, false);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -528,6 +528,7 @@ namespace GDApp
             textureDictionary.Add("lava", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/lava"));
             textureDictionary.Add("crate1", Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1"));
             textureDictionary.Add("ground", Content.Load<Texture2D>("Assets/Textures/Props/ground"));
+            textureDictionary.Add("platform", Content.Load<Texture2D>("Assets/Textures/Props/platform"));
 
             //ui
             textureDictionary.Add("ui_progress_32_8", Content.Load<Texture2D>("Assets/Textures/UI/Controls/ui_progress_32_8"));
@@ -1025,7 +1026,7 @@ namespace GDApp
             clone.Name = "platform";
             clone.Transform.Translate(0, 25, 140);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
@@ -1050,7 +1051,99 @@ namespace GDApp
             clone.Name = "platform2";
             clone.Transform.Translate(10, 32, 120);
             clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material",shader, Color.White, 1, textureDictionary["grass"])));
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material",shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+            #region 3rd Platform
+            clone = null;
+
+            clone = platform.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform3";
+            clone.Transform.Translate(-30, 34, 10);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+            #region 4rd Platform
+            clone = null;
+
+            clone = platform.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform4";
+            clone.Transform.Translate(-5, 39, -5);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+            #region 5rd Platform
+            clone = null;
+
+            clone = platform.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform5";
+            clone.Transform.Translate(25, 39, -25);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["platform"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+            #region 6rd Platform
+            clone = null;
+
+            clone = platform.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform6";
+            clone.Transform.Translate(50, 53, -110);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["platform"])));
 
             //add Collision Surface(s)
             collider = new Collider();
