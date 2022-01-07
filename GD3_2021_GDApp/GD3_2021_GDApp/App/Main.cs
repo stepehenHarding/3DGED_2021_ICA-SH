@@ -221,8 +221,29 @@ namespace GDApp
                 EventDispatcher.Raise(new EventData(EventCategoryType.Sound,
                     EventActionType.OnPlay2D, parameters));
             }
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.W))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.A))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
 
-            
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.S))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
+            if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.D))
+            {
+                object[] parameters = { "walking" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+            }
+
             //if (Input.Keys.WasJustPressed(Microsoft.Xna.Framework.Input.Keys.P))
             //{
             //    //DEMO - raise event
@@ -394,6 +415,8 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/cube");
             modelDictionary.Add("Assets/Models/teapot");
             modelDictionary.Add("Assets/Models/monkey1");
+            modelDictionary.Add("Assets/Models/helicopter");
+            modelDictionary.Add("Assets/Models/blade");
         }
 
         /// <summary>
@@ -950,6 +973,8 @@ namespace GDApp
             InitializeCollidableModels(level);
             InitializeCollidableTriangleMeshes(level);
             InitializeCrown(level);
+            InitializeHelicopter(level);
+            InitializeBlade(level);
         }
 
         private void InitializeCollidableTriangleMeshes(Scene level)
@@ -1003,6 +1028,68 @@ namespace GDApp
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["cube"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
+
+        private void InitializeHelicopter(Scene level)
+        {
+            #region Signs
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var crown = new GameObject("helicopter", GameObjectType.Consumable, true);
+
+            GameObject clone = null;
+
+            clone = crown.Clone() as GameObject;
+            clone.Name = "helicopter";
+            clone.Transform.Translate(10, 5, 10);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["helicopter"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["helicopter"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
+        private void InitializeBlade(Scene level)
+        {
+            #region Signs
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var crown = new GameObject("blade", GameObjectType.Consumable, true);
+
+            GameObject clone = null;
+
+            clone = crown.Clone() as GameObject;
+            clone.Name = "blade";
+            clone.Transform.Translate(10,7, 10);
+            clone.Transform.SetScale(1, 1, 1);
+            
+            clone.AddComponent(new ModelRenderer(modelDictionary["blade"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["blade"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
