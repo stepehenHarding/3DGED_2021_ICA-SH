@@ -418,6 +418,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/helicopter");
             modelDictionary.Add("Assets/Models/blade");
             modelDictionary.Add("Assets/Models/level");
+            modelDictionary.Add("Assets/Models/lava");
         }
 
         /// <summary>
@@ -509,6 +510,7 @@ namespace GDApp
 
             //environment
             textureDictionary.Add("grass", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1"));
+            textureDictionary.Add("lava", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/lava"));
             textureDictionary.Add("crate1", Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1"));
             textureDictionary.Add("ground", Content.Load<Texture2D>("Assets/Textures/Props/ground"));
 
@@ -978,6 +980,7 @@ namespace GDApp
             InitializeHelicopter(level);
             InitializeBlade(level);
             InitializeLevel(level);
+            InitializeLava(level);
         }
 
         private void InitializeCollidableTriangleMeshes(Scene level)
@@ -1042,8 +1045,7 @@ namespace GDApp
 
         private void InitializeHelicopter(Scene level)
         {
-            #region Signs
-
+            #region helicopter
 
             //re-use the code on the gfx card, if we want to draw multiple objects using Clone
             var shader = new BasicShader(Application.Content, false, true);
@@ -1053,7 +1055,7 @@ namespace GDApp
 
             clone = crown.Clone() as GameObject;
             clone.Name = "helicopter";
-            clone.Transform.Translate(10, 5, 10);
+            clone.Transform.Translate(10, 90, -150);
             clone.Transform.SetScale(1, 1, 1);
             clone.AddComponent(new ModelRenderer(modelDictionary["helicopter"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
 
@@ -1072,7 +1074,7 @@ namespace GDApp
         }
         private void InitializeBlade(Scene level)
         {
-            #region Signs
+            #region blades
 
 
             //re-use the code on the gfx card, if we want to draw multiple objects using Clone
@@ -1083,7 +1085,7 @@ namespace GDApp
 
             clone = crown.Clone() as GameObject;
             clone.Name = "blade";
-            clone.Transform.Translate(10,7, 10);
+            clone.Transform.Translate(10, 93, -150);
             clone.Transform.SetScale(1, 1, 1);
             
             clone.AddComponent(new ModelRenderer(modelDictionary["blade"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
@@ -1103,7 +1105,7 @@ namespace GDApp
         }
         private void InitializeLevel(Scene level)
         {
-            #region Signs
+            #region level
 
 
             //re-use the code on the gfx card, if we want to draw multiple objects using Clone
@@ -1169,6 +1171,51 @@ namespace GDApp
                 level.Add(clone);
             }
         }
+        private void InitializeLava(Scene level)
+        {
+            #region Reusable - You can copy and re-use this code elsewhere, if required
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+
+            //create the platform
+            var lava = new GameObject("lava",
+                GameObjectType.lava, true);
+
+
+            #endregion Reusable - You can copy and re-use this code elsewhere, if required
+            #region lava
+            GameObject clone = null;
+
+
+            clone = lava.Clone() as GameObject;
+
+            clone.Name = "lava";
+            var translationCurve = new Curve3D(CurveLoopType.Cycle);
+            translationCurve.Add(new Vector3(-10, -50, 20), 0);
+            translationCurve.Add(new Vector3(-10, 30, 20), 20000);
+
+            clone.AddComponent(new CurveBehaviour(translationCurve));
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["lava"],
+                new BasicMaterial("sphere_material",shader, Color.White, 1, textureDictionary["lava"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["lava"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(1f, 1f, 1f));
+            collider.Enable(true, 1);
+
+            clone.AddComponent(new CurveBehaviour(translationCurve));
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
         private void InitializeCollidablePickup(Scene level)
         {
             #region Reusable - You can copy and re-use this code elsewhere, if required
@@ -1212,11 +1259,10 @@ namespace GDApp
             #endregion Reusable - You can copy and re-use this code elsewhere, if required
 
             //create the ground
-            var ground = new GameObject("ground", GameObjectType.Ground, true);
+            var ground = new GameObject("lava", GameObjectType.Ground, true);
             ground.Transform.SetTranslation(0, -1, 0);
             ground.Transform.SetScale(worldScale, 2, worldScale);
-            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("grass_material", shader, Color.White, 1, textureDictionary["grass"])));
-
+            ground.AddComponent(new MeshRenderer(mesh, new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["lava"])));
             //add Collision Surface(s)
             collider = new Collider();
             ground.AddComponent(collider);
