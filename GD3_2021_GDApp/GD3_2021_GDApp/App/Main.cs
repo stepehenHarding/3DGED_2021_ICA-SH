@@ -1190,9 +1190,15 @@ namespace GDApp
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["lava"],
-               new Vector3(-10, -50, 20), new Vector3(0,0, 0), new Vector3(1f, 1f, 1f)),
+              clone.Transform.LocalTranslation,
+                clone.Transform.LocalRotation,
+                clone.Transform.LocalScale ), 
                new MaterialProperties(1f, 1f, 1f));
-            collider.Enable(true, 1);
+            //cant get it to move withthe lava 
+            collider.Enable(false, 1);
+
+
+            
 
             clone.AddComponent(new CurveBehaviour(translationCurve));
 
