@@ -419,6 +419,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/blade");
             modelDictionary.Add("Assets/Models/level");
             modelDictionary.Add("Assets/Models/lava");
+            modelDictionary.Add("Assets/Models/platform");
         }
 
         /// <summary>
@@ -717,34 +718,17 @@ namespace GDApp
                 texture);
 
             //add a demo time based behaviour - because we can!
-            healthTextureObj.AddComponent(new UITimeColorFlipBehaviour(Color.White, Color.Red, 1000));
+            healthTextureObj.AddComponent(new UITimeColorFlipBehaviour(Color.White, Color.Black, 1000));
 
             //add a progress controller
-            healthTextureObj.AddComponent(new UIProgressBarController(5, 10));
+            healthTextureObj.AddComponent(new UIProgressBarController(10, 10));
 
             //add the ui element to the scene
             mainGameUIScene.Add(healthTextureObj);
 
             #endregion Add Health Bar
 
-            #region Add Text
-
-            var font = fontDictionary["ui"];
-            var str = "player name";
-
-            //create the UI element
-            nameTextObj = new UITextObject(str, UIObjectType.Text,
-                new Transform2D(new Vector2(50, 50),
-                Vector2.One, 0),
-                0, font, "Brutus Maximus");
-
-            //  nameTextObj.Origin = font.MeasureString(str) / 2;
-            //  nameTextObj.AddComponent(new UIExpandFadeBehaviour());
-
-            //add the ui element to the scene
-            mainGameUIScene.Add(nameTextObj);
-
-            #endregion Add Text
+            
 
             #region Add Reticule
 
@@ -949,6 +933,7 @@ namespace GDApp
 
             //set initial position - important to set before the collider as collider capsule feeds off this position
             camera.Transform.SetTranslation(5, 25, 190);
+            
 
             //add components
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
@@ -986,14 +971,15 @@ namespace GDApp
         private void InitializeCollidables(Scene level, float worldScale = 500)
         {
             InitializeCollidableGround(level, worldScale);
-            InitializeCollidableCubes(level);
-            InitializeCollidablePickup(level);
-            InitializeCollidableModels(level);
+            //InitializeCollidableCubes(level);
+            //InitializeCollidablePickup(level);
+            //InitializeCollidableModels(level);
             InitializeCollidableTriangleMeshes(level);
             InitializeHelicopter(level);
             InitializeBlade(level);
             InitializeLevel(level);
             InitializeLava(level);
+            InitializePlatform(level);
         }
 
         private void InitializeCollidableTriangleMeshes(Scene level)
@@ -1025,7 +1011,61 @@ namespace GDApp
             //add To Scene Manager
             //level.Add(complexModel);
         }
-        
+        private void InitializePlatform(Scene level)
+        {
+            #region platform
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var platform = new GameObject("platform", GameObjectType.Consumable, true);
+
+            GameObject clone = null;
+
+            clone = platform.Clone() as GameObject;
+            clone.Name = "platform";
+            clone.Transform.Translate(0, 25, 140);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+
+
+            #region Second Platform
+            clone = null;
+
+            clone = platform.Clone() as GameObject;
+
+            //clone the archetypal cube
+            clone.Name = "platform2";
+            clone.Transform.Translate(10, 32, 120);
+            clone.Transform.SetScale(1, 1, 1);
+            clone.AddComponent(new ModelRenderer(modelDictionary["platform"], new BasicMaterial("sphere_material",shader, Color.White, 1, textureDictionary["grass"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["platform"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+            #endregion
+        }
 
         private void InitializeHelicopter(Scene level)
         {
@@ -1177,8 +1217,8 @@ namespace GDApp
 
             clone.Name = "lava";
             var translationCurve = new Curve3D(CurveLoopType.Cycle);
-            translationCurve.Add(new Vector3(-10, -50, 20), 0);
-            translationCurve.Add(new Vector3(-10, 30, 20), 20000);
+            translationCurve.Add(new Vector3(-10, -28, 20), 0);
+            translationCurve.Add(new Vector3(-10, 30, 20), 100000);
 
             clone.AddComponent(new CurveBehaviour(translationCurve));
             clone.Transform.SetScale(1, 1, 1);
@@ -1186,16 +1226,20 @@ namespace GDApp
                 new BasicMaterial("sphere_material",shader, Color.White, 1, textureDictionary["lava"])));
 
             //add Collision Surface(s)
-            collider = new Collider();
-            clone.AddComponent(collider);
-            collider.AddPrimitive(
-               CollisionUtility.GetTriangleMesh(modelDictionary["lava"],
-              clone.Transform.LocalTranslation,
-                clone.Transform.LocalRotation,
-                clone.Transform.LocalScale ), 
-               new MaterialProperties(1f, 1f, 1f));
-            //cant get it to move withthe lava 
-            collider.Enable(false, 1);
+//            collider = new Collider();
+//            clone.AddComponent(collider);
+//            collider.AddPrimitive(
+//               CollisionUtility.GetTriangleMesh(modelDictionary["lava"],
+//              clone.Transform.LocalTranslation,
+//                clone.Transform.LocalRotation,
+//                clone.Transform.LocalScale ), 
+//               new MaterialProperties(1f, 1f, 1f));
+//            collider.Enable(true, 1);
+//            GameObject clone1 = null;
+
+
+           // clone1 = lava.Clone() as GameObject;
+           // clone1.AddComponent(new CurveBehaviour(translationCurve));
 
 
             
