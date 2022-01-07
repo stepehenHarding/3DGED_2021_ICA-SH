@@ -366,7 +366,7 @@ namespace GDApp
             Input.Mouse.Position = Screen.Instance.ScreenCentre;
 
             //turn on/off debug info
-            InitializeDebugUI(true, false);
+            InitializeDebugUI(true, true);
 
             //to show the menu we must start paused for everything else!
             EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPause));
@@ -417,6 +417,7 @@ namespace GDApp
             modelDictionary.Add("Assets/Models/monkey1");
             modelDictionary.Add("Assets/Models/helicopter");
             modelDictionary.Add("Assets/Models/blade");
+            modelDictionary.Add("Assets/Models/level");
         }
 
         /// <summary>
@@ -509,6 +510,7 @@ namespace GDApp
             //environment
             textureDictionary.Add("grass", Content.Load<Texture2D>("Assets/Textures/Foliage/Ground/grass1"));
             textureDictionary.Add("crate1", Content.Load<Texture2D>("Assets/Textures/Props/Crates/crate1"));
+            textureDictionary.Add("ground", Content.Load<Texture2D>("Assets/Textures/Props/ground"));
 
             //ui
             textureDictionary.Add("ui_progress_32_8", Content.Load<Texture2D>("Assets/Textures/UI/Controls/ui_progress_32_8"));
@@ -930,7 +932,7 @@ namespace GDApp
             camera = new GameObject(AppData.CAMERA_FIRSTPERSON_COLLIDABLE_NAME, GameObjectType.Camera);
 
             //set initial position - important to set before the collider as collider capsule feeds off this position
-            camera.Transform.SetTranslation(0, 5, 10);
+            camera.Transform.SetTranslation(5, 25, 190);
 
             //add components
             camera.AddComponent(new Camera(_graphics.GraphicsDevice.Viewport));
@@ -975,6 +977,7 @@ namespace GDApp
             InitializeCrown(level);
             InitializeHelicopter(level);
             InitializeBlade(level);
+            InitializeLevel(level);
         }
 
         private void InitializeCollidableTriangleMeshes(Scene level)
@@ -1091,6 +1094,37 @@ namespace GDApp
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["blade"],
                 new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
+                new MaterialProperties(0.1f, 0.8f, 0.7f));
+            collider.Enable(true, 1);
+
+            //add To Scene Manager
+            level.Add(clone);
+            #endregion
+        }
+        private void InitializeLevel(Scene level)
+        {
+            #region Signs
+
+
+            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
+            var shader = new BasicShader(Application.Content, false, true);
+            var crown = new GameObject("level", GameObjectType.Consumable, true);
+
+            GameObject clone = null;
+
+            clone = crown.Clone() as GameObject;
+            clone.Name = "level";
+            clone.Transform.Translate(10, 7, 10);
+            clone.Transform.SetScale(1, 1, 1);
+
+            clone.AddComponent(new ModelRenderer(modelDictionary["level"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["ground"])));
+
+            //add Collision Surface(s)
+            collider = new Collider();
+            clone.AddComponent(collider);
+            collider.AddPrimitive(
+               CollisionUtility.GetTriangleMesh(modelDictionary["level"],
+                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
                 new MaterialProperties(0.1f, 0.8f, 0.7f));
             collider.Enable(true, 1);
 
