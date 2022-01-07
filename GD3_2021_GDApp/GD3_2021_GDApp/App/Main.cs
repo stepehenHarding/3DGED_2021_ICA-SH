@@ -499,12 +499,9 @@ namespace GDApp
             soundManager.Add(new GDLibrary.Managers.Cue(
                 "victory noise",
                 soundEffect,
-                SoundCategoryType.Jump,
+                SoundCategoryType.WinLose,
                 new Vector3(1, 0, 0),
                 false));
-
-
-            
         }
 
         /// <summary>
