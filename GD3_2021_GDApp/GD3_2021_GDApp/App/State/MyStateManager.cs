@@ -48,6 +48,10 @@ namespace GDApp
                 //aTimer.AutoReset = false;
                 //aTimer.Enabled = true;
                 //Application.UISceneManager.SetActiveScene(AppData.MainMenuScene);
+                EventDispatcher.Raise(new EventData(EventCategoryType.Menu, EventActionType.OnPlay));
+                object[] parameters = { "victory noise" };
+                EventDispatcher.Raise(new EventData(EventCategoryType.Sound, EventActionType.OnPlay2D, parameters));
+
             }
             else if (eventData.EventActionType == EventActionType.OnWin)
             {

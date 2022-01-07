@@ -490,6 +490,20 @@ namespace GDApp
                 SoundCategoryType.Jump,
                 new Vector3(1, 0, 0),
                 false));
+
+            soundEffect =
+               Content.Load<SoundEffect>("Assets/Sounds/victory noise");
+
+            //add the new sound effect
+            soundManager.Add(new GDLibrary.Managers.Cue(
+                "victory noise",
+                soundEffect,
+                SoundCategoryType.Jump,
+                new Vector3(1, 0, 0),
+                false));
+
+
+            
         }
 
         /// <summary>
@@ -976,7 +990,6 @@ namespace GDApp
             InitializeCollidablePickup(level);
             InitializeCollidableModels(level);
             InitializeCollidableTriangleMeshes(level);
-            InitializeCrown(level);
             InitializeHelicopter(level);
             InitializeBlade(level);
             InitializeLevel(level);
@@ -1012,36 +1025,7 @@ namespace GDApp
             //add To Scene Manager
             //level.Add(complexModel);
         }
-        private void InitializeCrown(Scene level)
-        {
-            #region Signs
-
-
-            //re-use the code on the gfx card, if we want to draw multiple objects using Clone
-            var shader = new BasicShader(Application.Content, false, true);
-            var crown = new GameObject("cube", GameObjectType.Consumable, true);
-
-            GameObject clone = null;
-
-            clone = crown.Clone() as GameObject;
-            clone.Name = "cube";
-            clone.Transform.Translate(10, 5, 10);
-            clone.Transform.SetScale(1, 1, 1);
-            clone.AddComponent(new ModelRenderer(modelDictionary["cube"], new BasicMaterial("sphere_material", shader, Color.White, 1, textureDictionary["grass"])));
-
-            //add Collision Surface(s)
-            collider = new Collider();
-            clone.AddComponent(collider);
-            collider.AddPrimitive(
-               CollisionUtility.GetTriangleMesh(modelDictionary["cube"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(0.8f, 0.8f, 1f)),
-                new MaterialProperties(0.1f, 0.8f, 0.7f));
-            collider.Enable(true, 1);
-
-            //add To Scene Manager
-            level.Add(clone);
-            #endregion
-        }
+        
 
         private void InitializeHelicopter(Scene level)
         {
@@ -1206,8 +1190,8 @@ namespace GDApp
             clone.AddComponent(collider);
             collider.AddPrimitive(
                CollisionUtility.GetTriangleMesh(modelDictionary["lava"],
-                new Vector3(0, 0, 0), new Vector3(0, 0, 0), new Vector3(1f, 1f, 1f)),
-                new MaterialProperties(1f, 1f, 1f));
+               new Vector3(-10, -50, 20), new Vector3(0,0, 0), new Vector3(1f, 1f, 1f)),
+               new MaterialProperties(1f, 1f, 1f));
             collider.Enable(true, 1);
 
             clone.AddComponent(new CurveBehaviour(translationCurve));
